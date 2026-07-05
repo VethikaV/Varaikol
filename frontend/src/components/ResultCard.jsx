@@ -6,10 +6,12 @@ export default function ResultCard({
   loading = false,
   icon = null,
   emptyText = null,
-  className = ""
+  className = "",
+  actions = null,   
 }) {
   return (
     <div className={`result-card ${className}`}>
+
       {/* HEADER */}
       {(title || icon) && (
         <div className="result-header">
@@ -31,6 +33,9 @@ export default function ResultCard({
           emptyText && <p className="result-empty">{emptyText}</p>
         )}
       </div>
+
+      {/* ACTIONS (NEW) */}
+      {actions && <div className="result-actions">{actions}</div>}
     </div>
   );
 }

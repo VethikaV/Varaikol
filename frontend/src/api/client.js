@@ -1,13 +1,13 @@
 const BASE = "http://localhost:5000";
 
-export async function getIdeas(prompt) {
-  const res = await fetch(`${BASE}/api/ideas`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt }),
+
+export const getIdeas = async (prompt) => {
+  const res = await axios.post("http://127.0.0.1:5000/api/ideas", {
+    prompt,
   });
-  return res.json();
-}
+
+  return res.data; 
+};
 
 export async function convertSketch(file) {
   const form = new FormData();

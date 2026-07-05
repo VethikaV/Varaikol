@@ -1,6 +1,12 @@
-/* ── Reset ── */
+/* ══════════════════════════════════════════════════════════════
+   RESET
+   ══════════════════════════════════════════════════════════════ */
 .home * { box-sizing: border-box; }
-/* ── App header (inner pages) ── */
+
+
+/* ══════════════════════════════════════════════════════════════
+   SHARED — APP HEADER (used on all inner pages)
+   ══════════════════════════════════════════════════════════════ */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -32,7 +38,10 @@
   gap: 0.4rem;
 }
 
-/* ── Navbar ── */
+
+/* ══════════════════════════════════════════════════════════════
+   SHARED — NAVBAR (pill nav used across pages)
+   ══════════════════════════════════════════════════════════════ */
 .navbar {
   display: flex;
   gap: 0.35rem;
@@ -73,21 +82,26 @@
 .navbar-icon {
   flex-shrink: 0;
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   HOME — PAGE WRAPPER
+   ══════════════════════════════════════════════════════════════ */
 .home {
   min-height: 100vh;
-    background:#F4F4F6;
+  background: #F4F4F6;
   font-family: 'Arial', sans-serif;
   color: #1a1a1a;
 }
 
-/* ── Nav ── */
+/* ── Home / Nav ── */
 .home-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 3rem;
-  background:#F4F4F6;
-  border-bottom:1px solid #D2D2D4;
+  background: #F4F4F6;
+  border-bottom: 1px solid #D2D2D4;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -101,7 +115,7 @@
 }
 
 .home-nav-btn {
-  background:#FF634A;
+  background: #FF634A;
   color: #fff;
   border: none;
   padding: 0.55rem 1.4rem;
@@ -111,9 +125,9 @@
   transition: background 0.2s;
 }
 
-.home-nav-btn:hover { background:#E5533D; }
+.home-nav-btn:hover { background: #E5533D; }
 
-/* ── Hero ── */
+/* ── Home / Hero ── */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -132,7 +146,7 @@
 .hero-tamil {
   font-family: Georgia, serif;
   font-size: 1.1rem;
-  color:#FF634A;
+  color: #FF634A;
   margin: 0 0 0.5rem;
   font-style: italic;
 }
@@ -142,7 +156,7 @@
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 700;
   line-height: 1.15;
-  color:#FF634A;
+  color: #FF634A;
   margin: 0 0 1.2rem;
   letter-spacing: -0.02em;
 }
@@ -162,7 +176,7 @@
 }
 
 .hero-cta {
-  background:#FF634A;
+  background: #FF634A;
   color: #fff;
   border: none;
   padding: 0.85rem 2rem;
@@ -173,11 +187,10 @@
 }
 
 .hero-cta:hover {
-  background:#E5533D;
+  background: #E5533D;
   transform: translateY(-2px);
 }
 
-/* ── Hero art grid ── */
 .hero-right {
   display: flex;
   justify-content: center;
@@ -198,7 +211,7 @@
 .a3 { background: linear-gradient(135deg, #bfdbfe, #93c5fd); }
 .a4 { background: linear-gradient(135deg, #d1fae5, #6ee7b7); }
 
-/* ── Features section ── */
+/* ── Home / Features section ── */
 .features-section {
   max-width: 1100px;
   margin: 0 auto;
@@ -218,45 +231,72 @@
 }
 
 .features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  max-width: 3000px;
+  margin: 3rem auto;
+  display: flex;
+  justify-content: center;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 768px) {
   .features-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Feature card ── */
-.feat-card {
+.feature-card {
+  width: 360px;
   background: #fff;
-  border:1px solid #D2D2D4;
-  border-radius: 18px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
-  opacity: 0;
-  transform: translateY(20px);
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s ease;
 }
 
-.feat-card.visible {
-  animation: fadeUp 0.5s ease forwards;
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
 }
 
-.feat-card:nth-child(2) { animation-delay: 0.1s; }
-.feat-card:nth-child(3) { animation-delay: 0.2s; }
-
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
+.feature-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  margin-bottom: 0.8rem;
 }
 
-.feat-card:hover {
-  transform: translateY(-5px);
-    border-color:#FF634A;
-    box-shadow:0 15px 35px rgba(255,99,74,.15);
+.feature-tag {
+  background: #eff6ff;
+  color: #E5533D;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
-/* ── Card preview area ── */
+.feature-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.feature-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.feature-card button {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+}
+
+.feature-card button:hover {
+  background: #E5533D;
+}
+
 .feat-card-preview {
   background: #f5f7ff;
   padding: 1.5rem;
@@ -267,58 +307,12 @@
   border-bottom: 1px solid #ebebeb;
 }
 
-/* ── Card body ── */
-.feat-card-body {
-  padding: 1.4rem 1.5rem 1.6rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.feat-tag {
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color:#FF634A;
-  font-weight: 600;
-}
-
-.feat-title {
-  font-family: Georgia, serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0.1rem 0 0.3rem;
-  letter-spacing: -0.01em;
-}
-
-
-.feat-desc {
-  font-size: 0.85rem;
-  color: #777;
-  line-height: 1.6;
-  margin: 0 0 0.8rem;
-}
-
-.feat-cta {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.feat-arrow {
-  font-size: 1rem;
-  color:#FF634A;
-}
-
-/* ══ Preview widgets ══ */
-
-/* Ideas preview */
 .card-preview { width: 100%; }
 
+
+/* ══════════════════════════════════════════════════════════════
+   HOME — IDEAS FEATURE CARD PREVIEW (mini mockup on homepage)
+   ══════════════════════════════════════════════════════════════ */
 .ideas-preview {
   display: flex;
   flex-direction: column;
@@ -366,7 +360,10 @@
 .prev-img.medium { background: linear-gradient(135deg, #fef9c3, #fde047); color: #713f12; }
 .prev-img.hard   { background: linear-gradient(135deg, #fee2e2, #fca5a5); color: #7f1d1d; }
 
-/* Sketch preview */
+
+/* ══════════════════════════════════════════════════════════════
+   HOME — SKETCH FEATURE CARD PREVIEW (mini mockup on homepage)
+   ══════════════════════════════════════════════════════════════ */
 .sketch-preview { width: 100%; }
 
 .sketch-mock-wrap {
@@ -398,6 +395,7 @@
 }
 
 .photo-block  { background: linear-gradient(135deg, #bfdbfe, #6366f1); }
+
 .sketch-block {
   background: #fff;
   border: 2px solid #ddd;
@@ -415,11 +413,14 @@
 
 .arrow-mock {
   font-size: 1.2rem;
-   color:#FF634A;
+  color: #FF634A;
   flex-shrink: 0;
 }
 
-/* Analyze preview */
+
+/* ══════════════════════════════════════════════════════════════
+   HOME — ANALYZE FEATURE CARD PREVIEW (mini mockup on homepage)
+   ══════════════════════════════════════════════════════════════ */
 .analyze-preview {
   display: flex;
   gap: 0.75rem;
@@ -456,13 +457,16 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background:#FF634A;
+  background: #FF634A;
   flex-shrink: 0;
 }
 
 .mock-result-row.muted .mock-dot { background: #ddd; }
 
-/* ── Footer ── */
+
+/* ══════════════════════════════════════════════════════════════
+   HOME — FOOTER
+   ══════════════════════════════════════════════════════════════ */
 .home-footer {
   text-align: center;
   font-size: 0.78rem;
@@ -472,6 +476,10 @@
   background: #fff;
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   SHARED — UPLOAD WIDGET (used by Sketch + Analyze pages)
+   ══════════════════════════════════════════════════════════════ */
 .upload-wrapper {
   display: flex;
   justify-content: center;
@@ -490,8 +498,8 @@
 }
 
 .upload-card.drag-active {
-  border-color:#FF634A;
-    background:#FFF4F1;
+  border-color: #FF634A;
+  background: #FFF4F1;
 }
 
 .dropzone {
@@ -509,7 +517,7 @@
 .upload-btn {
   margin-top: 10px;
   padding: 10px 18px;
-  background:#FF634A;
+  background: #FF634A;
   color: white;
   border: none;
   border-radius: 10px;
@@ -518,7 +526,7 @@
 }
 
 .upload-btn:hover {
-  background:#E5533D;
+  background: #E5533D;
 }
 
 .upload-preview {
@@ -541,6 +549,10 @@
   margin-top: 10px;
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   ANALYZE PAGE — Result layout (image left, content right)
+   ══════════════════════════════════════════════════════════════ */
 .analyze-layout {
   display: flex;
   gap: 20px;
@@ -553,9 +565,28 @@
   display: flex;
   justify-content: center;
 }
+.analyze-result-card {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+/* was: .analyze-result-card { ... } */
+.result-card.analyze-result-card {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .result-card.analyze-result-card {
+    max-width: 100%;
+  }
+}
+
+
 
 .analyze-image {
-  width: 160px;        /* 👈 FIX: small image */
+  width: 160px;
   height: auto;
   border-radius: 12px;
   object-fit: cover;
@@ -565,12 +596,23 @@
 /* CONTENT SIDE */
 .analyze-content {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* BLOCK STYLE */
+@media (max-width: 640px) {
+  .analyze-layout {
+    flex-direction: column;
+  }
+  .analyze-image-box {
+    flex: unset;
+    width: 100%;
+  }
+}
+
+/* BLOCK STYLE (shared by Analyze result blocks) */
 .info-block {
   background: #f8f9fb;
   padding: 12px 14px;
@@ -612,10 +654,10 @@
   color: #555;
 }
 
-/* ══════════════════════════════ */
-/* Shared inner-page layout       */
-/* ══════════════════════════════ */
 
+/* ══════════════════════════════════════════════════════════════
+   SHARED — INNER PAGE LAYOUT (Ideas / Sketch / Analyze pages)
+   ══════════════════════════════════════════════════════════════ */
 .page {
   min-height: 100vh;
   background: #F4F4F6;
@@ -662,7 +704,7 @@
   margin: 0 auto;
 }
 
-/* ── Input row (Ideas page) ── */
+/* ── Shared action button / input row ── */
 .input-row {
   display: flex;
   gap: 0.75rem;
@@ -683,7 +725,6 @@
   border-color: #FF634A;
 }
 
-/* ── Action button (shared) ── */
 .action-btn {
   background: #FF634A;
   color: #fff;
@@ -731,7 +772,10 @@
   margin: -1rem 0 1.5rem;
 }
 
-/* ── Ideas grid ── */
+
+/* ══════════════════════════════════════════════════════════════
+   IDEAS PAGE — Grid of generated idea cards
+   ══════════════════════════════════════════════════════════════ */
 .ideas-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -784,7 +828,10 @@
   line-height: 1.5;
 }
 
-/* ── Sketch compare ── */
+
+/* ══════════════════════════════════════════════════════════════
+   SKETCH PAGE — Before/After comparison layout
+   ══════════════════════════════════════════════════════════════ */
 .sketch-compare {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -800,4 +847,22 @@
   width: 100%;
   border-radius: 12px;
   display: block;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   SHARED — RESULT CARD (small card container, used across pages)
+   ══════════════════════════════════════════════════════════════ */
+.result-card {
+  width: 260px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }

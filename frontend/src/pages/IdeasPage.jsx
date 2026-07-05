@@ -16,22 +16,38 @@ export default function IdeasPage() {
   const [error, setError] = useState(null);
 
   const handleSubmit = async () => {
-    if (!prompt.trim()) return;
-    setLoading(true);
-    setError(null);
-    setIdeas([]);
-    try {
-      const data = await getIdeas(prompt);
-      setIdeas([
-        { difficulty: "Easy",   prompt: data.easy?.prompt,   image_url: data.easy?.image },
-        { difficulty: "Medium", prompt: data.medium?.prompt, image_url: data.medium?.image },
-        { difficulty: "Hard",   prompt: data.hard?.prompt,   image_url: data.hard?.image },
-      ]);
-    } catch (err) {
-      setError("Could not fetch ideas. Please try again.");
-    }
-    setLoading(false);
-  };
+  if (!prompt.trim()) return;
+
+  setLoading(true);
+  setError(null);
+  setIdeas([]);
+
+  try {
+    const res = await getIdeas(prompt);
+
+    const text = res.data; // IMPORTANT
+
+    const easy = text.match(/EASY:\s*(.*?)(?=\nMEDIUM:|$)/s)?.[1]?.trim();
+    const medium = text.match(/MEDIUM:\s*(.*?)(?=\nHARD:|$)/s)?.[1]?.trim();
+    const hard = text.match(/HARD:\s*(.*)/s)?.[1]?.trim();
+
+    setIdeas([
+      { difficulty: "Easy", prompt: easy, image_url: generateImage(easy) },
+      { difficulty: "Medium", prompt: medium, image_url: generateImage(medium) },
+      { difficulty: "Hard", prompt: hard, image_url: generateImage(hard) },
+    ]);
+
+  } catch (err) {
+    setError("Could not fetch ideas. Please try again.");
+  }
+
+  setLoading(false);
+};
+
+  const generateImage = (prompt) => {
+  if (!prompt) return null;
+  return `https://source.unsplash.com/600x400/?${encodeURIComponent(prompt)}`;
+};
 
   return (
     <div className="page">

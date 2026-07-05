@@ -2,78 +2,35 @@ import { useEffect, useRef } from "react";
 import "./style.css";
 import homepageGif from "../assets/homepage.gif";
 
+import { Lightbulb, Image, ScanSearch } from "lucide-react";
+
 const features = [
   {
     id: 1,
+    icon: <Lightbulb size={32} />,
     tag: "Inspire",
     title: "What Can I Draw?",
-    desc: "Describe anything — get three AI-generated drawing ideas with reference images, difficulty levels, and tips.",
+    desc: "Describe anything and receive AI-generated drawing ideas with reference images, difficulty levels, and creative tips.",
     cta: "Get Ideas",
-    preview: (
-      <div className="card-preview ideas-preview">
-        <div className="preview-input-mock">
-          <span>a butterfly...</span>
-          <div className="preview-btn-mock">Get Ideas</div>
-        </div>
-        <div className="preview-images-mock">
-          <div className="prev-img easy">Easy</div>
-          <div className="prev-img medium">Medium</div>
-          <div className="prev-img hard">Hard</div>
-        </div>
-      </div>
-    ),
+    tab: 1,
   },
   {
     id: 2,
+    icon: <Image size={32} />,
     tag: "Transform",
     title: "Photo to Sketch",
-    desc: "Upload any photo and get a clean pencil outline in seconds. Perfect as a tracing base or reference.",
+    desc: "Convert any photo into a clean pencil sketch.",
     cta: "Convert Photo",
-    preview: (
-      <div className="card-preview sketch-preview">
-        <div className="sketch-mock-wrap">
-          <div className="sketch-mock original">
-            <div className="mock-label">Photo</div>
-            <div className="mock-img-block photo-block" />
-          </div>
-          <div className="arrow-mock">→</div>
-          <div className="sketch-mock result">
-            <div className="mock-label">Sketch</div>
-            <div className="mock-img-block sketch-block" />
-          </div>
-        </div>
-      </div>
-    ),
+    tab: 2,
   },
   {
     id: 3,
+    icon: <ScanSearch size={32} />,
     tag: "Improve",
     title: "Analyze My Drawing",
-    desc: "Upload your artwork and receive AI feedback on medium, style, and specific tips to improve.",
+    desc: "Upload artwork and get AI feedback.",
     cta: "Analyze Drawing",
-    preview: (
-      <div className="card-preview analyze-preview">
-        <div className="analyze-mock-img" />
-        <div className="analyze-mock-result">
-          <div className="mock-result-row">
-            <span className="mock-dot" />
-            <span>Medium: Pencil Shading</span>
-          </div>
-          <div className="mock-result-row">
-            <span className="mock-dot" />
-            <span>Style: Realistic Sketch</span>
-          </div>
-          <div className="mock-result-row muted">
-            <span className="mock-dot" />
-            <span>Improve shading on cheeks</span>
-          </div>
-          <div className="mock-result-row muted">
-            <span className="mock-dot" />
-            <span>Work on eye proportions</span>
-          </div>
-        </div>
-      </div>
-    ),
+    tab: 3,
   },
 ];
 
@@ -128,33 +85,28 @@ export default function HomePage({ setTab }) {
       </section>
 
       {/* ── Cards ── */}
-      <section className="features-section">
-        <p className="features-eyebrow">Three ways to help you draw</p>
-        <div className="features-grid">
-          {features.map((f, i) => (
-            <div
-              key={f.id}
-              className="feat-card"
-              ref={(el) => (cardsRef.current[i] = el)}
-              onClick={() => setTab(f.id)}
-            >
-              {/* Preview area at top */}
-              <div className="feat-card-preview">{f.preview}</div>
+      <div className="features-grid">
+  {features.map((feature) => (
+    <div className="feature-card" key={feature.id}>
+      
+      <div className="feature-icon">{feature.icon}</div>
 
-              {/* Text at bottom */}
-              <div className="feat-card-body">
-                <span className="feat-tag">{f.tag}</span>
-                <h3 className="feat-title">{f.title}</h3>
-                <p className="feat-desc">{f.desc}</p>
-                <span className="feat-cta">
-                  {f.cta} <span className="feat-arrow">↗</span>
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <span className="feature-tag">{feature.tag}</span>
 
+      <h3>{feature.title}</h3>
+
+      <p>{feature.desc}</p>
+
+      <button
+        className="feature-btn"
+        onClick={() => setTab(feature.tab)}
+      >
+        {feature.cta}
+      </button>
+
+    </div>
+  ))}
+</div>
       
     </div>
   );

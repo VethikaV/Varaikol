@@ -86,11 +86,12 @@ export default function AnalyzePage() {
         {error && <p className="error-msg">{error}</p>}
 
         {/* RESULT SECTION */}
+
         {result && (
-          <div className="analyze-result">
-            <ResultCard title="Analysis Result">
-              <div className="analyze-layout">
-                {/* LEFT: IMAGE */}
+  <div className="analyze-result">
+    <ResultCard title="Analysis Result" className="analyze-result-card">
+      <div className="analyze-layout">
+        {/* ... rest unchanged ... */} {/* LEFT: IMAGE */}
                 <div className="analyze-image-box">
                   {previewUrl && (
                     <img
@@ -113,7 +114,7 @@ export default function AnalyzePage() {
 
                   {/* FEEDBACK */}
                   <div className="info-block">
-                    <span className="label">AI Feedback</span>
+                    <span className="label">Feedback</span>
                     <p className="feedback-text">
                       {result?.feedback || "No feedback available"}
                     </p>
@@ -131,10 +132,12 @@ export default function AnalyzePage() {
                     </div>
                   )}
                 </div>
-              </div>
-            </ResultCard>
-          </div>
-        )}
+              
+      </div>
+    </ResultCard>
+  </div>
+)}
+       
       </div>
     </div>
   );
