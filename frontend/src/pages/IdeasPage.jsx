@@ -9,6 +9,8 @@ const DIFFICULTY_COLOR = {
   Hard: "#ef4444",
 };
 
+const BACKEND_URL = "http://127.0.0.1:5000";
+
 export default function IdeasPage() {
   const [prompt, setPrompt] = useState("");
   const [ideas, setIdeas] = useState([]);
@@ -16,45 +18,48 @@ export default function IdeasPage() {
   const [error, setError] = useState(null);
 
   const handleSubmit = async () => {
-  if (!prompt.trim()) return;
+    if (!prompt.trim()) return;
 
-  setLoading(true);
-  setError(null);
-  setIdeas([]);
+    setLoading(true);
+    setError(null);
+    setIdeas([]);
 
-  try {
-    const res = await getIdeas(prompt);
+    try {
+      const res = await getIdeas(prompt); // { easy: {...}, medium: {...}, hard: {...} }
 
-    const text = res.data; // IMPORTANT
+      setIdeas([
+        {
+          difficulty: "Easy",
+          prompt: res.easy.prompt,
+          image_url: res.easy.image ? `${BACKEND_URL}${res.easy.image}` : null,
+        },
+        {
+          difficulty: "Medium",
+          prompt: res.medium.prompt,
+          image_url: res.medium.image ? `${BACKEND_URL}${res.medium.image}` : null,
+        },
+        {
+          difficulty: "Hard",
+          prompt: res.hard.prompt,
+          image_url: res.hard.image ? `${BACKEND_URL}${res.hard.image}` : null,
+        },
+      ]);
+    } catch (err) {
+      console.error(err); // keep this while debugging
+      setError("Could not fetch ideas. Please try again.");
+    }
 
-    const easy = text.match(/EASY:\s*(.*?)(?=\nMEDIUM:|$)/s)?.[1]?.trim();
-    const medium = text.match(/MEDIUM:\s*(.*?)(?=\nHARD:|$)/s)?.[1]?.trim();
-    const hard = text.match(/HARD:\s*(.*)/s)?.[1]?.trim();
-
-    setIdeas([
-      { difficulty: "Easy", prompt: easy, image_url: generateImage(easy) },
-      { difficulty: "Medium", prompt: medium, image_url: generateImage(medium) },
-      { difficulty: "Hard", prompt: hard, image_url: generateImage(hard) },
-    ]);
-
-  } catch (err) {
-    setError("Could not fetch ideas. Please try again.");
-  }
-
-  setLoading(false);
-};
-
-  const generateImage = (prompt) => {
-  if (!prompt) return null;
-  return `https://source.unsplash.com/600x400/?${encodeURIComponent(prompt)}`;
-};
+    setLoading(false);
+  };
 
   return (
     <div className="page">
       <div className="page-header">
         <span className="page-tag">Inspire</span>
         <h2 className="page-title">What Can I Draw?</h2>
-        <p className="page-sub">Describe anything and get three drawing ideas with reference images.</p>
+        <p className="page-sub">
+          Describe anything and get three drawing ideas with reference images.
+        </p>
       </div>
 
       <div className="page-body">
@@ -71,7 +76,9 @@ export default function IdeasPage() {
             disabled={loading}
           >
             {loading ? (
-              <span className="btn-loading"><span className="spinner" /> Generating...</span>
+              <span className="btn-loading">
+                <span className="spinner" /> Generating...
+              </span>
             ) : (
               "Get Ideas →"
             )}

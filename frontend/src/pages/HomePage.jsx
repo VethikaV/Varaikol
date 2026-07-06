@@ -54,9 +54,7 @@ export default function HomePage({ setTab }) {
       {/* ── Nav ── */}
       <nav className="home-nav">
         <span className="home-nav-logo">வரைகோல்</span>
-        <button className="home-nav-btn" onClick={() => setTab(0)}>
-          Start Drawing
-        </button>
+        
       </nav>
 
       {/* ── Hero ── */}
@@ -71,9 +69,7 @@ export default function HomePage({ setTab }) {
             Your AI-powered drawing companion — get ideas, convert photos to
             sketches, and receive expert feedback on your artwork.
           </p>
-          <button className="hero-cta" onClick={() => setTab(0)}>
-            Start Creating →
-          </button>
+          
         </div>
        <div className="hero-right">
            <img
