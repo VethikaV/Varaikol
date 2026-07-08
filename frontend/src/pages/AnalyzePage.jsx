@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { analyzeDrawing } from "../api/client";
 import ImageUpload from "../components/ImageUpload";
 import ResultCard from "../components/ResultCard";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./style.css";
 
 export default function AnalyzePage() {
@@ -113,12 +115,14 @@ export default function AnalyzePage() {
                   </div>
 
                   {/* FEEDBACK */}
-                  <div className="info-block">
-                    <span className="label">Feedback</span>
-                    <p className="feedback-text">
-                      {result?.feedback || "No feedback available"}
-                    </p>
-                  </div>
+                 <div className="info-block">
+               <span className="label">Feedback</span>
+             <div className="feedback-text markdown-body">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {result?.feedback || "No feedback available"}
+             </ReactMarkdown>
+            </div>
+           </div>
 
                   {/* TIPS */}
                   {result?.tips?.length > 0 && (

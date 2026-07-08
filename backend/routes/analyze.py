@@ -3,12 +3,14 @@ from werkzeug.utils import secure_filename
 from flask import Blueprint, request, jsonify
 
 from services.medium_classifier import classify_medium
-from services.feedback_generator import generate_feedback
+from rag.prompt import build_prompt
+from services.openrouter import call_llm
 
 analyze_bp = Blueprint("analyze", __name__)
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 
 @analyze_bp.route("/analyze", methods=["POST"])
 def analyze():
@@ -23,8 +25,10 @@ def analyze():
 
     file.save(path)
 
+    # Detect medium
     result = classify_medium(path)
 
+    # If photo, return immediately
     if result["medium"] == "Photo":
         return jsonify({
             "type": "Photo",
@@ -32,12 +36,15 @@ def analyze():
             "confidence": result["confidence"]
         })
 
-    feedback_result = generate_feedback(medium=result["medium"])
+    # Build RAG prompt using only the medium
+    prompt = build_prompt(result["medium"])
+
+    # Generate response from LLM
+    feedback = call_llm(prompt)
 
     return jsonify({
         "type": "Drawing",
         "medium": result["medium"],
         "confidence": result["confidence"],
-        "feedback": feedback_result["feedback"],
-        "tips": feedback_result["tips"]
+        "feedback": feedback
     })
