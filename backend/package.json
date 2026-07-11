@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.3.0",
     "axios": "^1.18.1",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1"
