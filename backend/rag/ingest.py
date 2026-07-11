@@ -6,7 +6,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from rag.embeddings import get_embedding
 
-
 client = chromadb.PersistentClient(path="vectordb")
 
 collection = client.get_or_create_collection(

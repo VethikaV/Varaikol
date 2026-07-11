@@ -20,15 +20,19 @@ def analyze():
     if file is None:
         return jsonify({"error": "No image uploaded"}), 400
 
+
+    # Save uploaded image
     filename = secure_filename(file.filename)
     path = os.path.join(UPLOAD_FOLDER, filename)
 
     file.save(path)
 
-    # Detect medium
+
+    # Detect drawing medium using ML model
     result = classify_medium(path)
 
-    # If photo, return immediately
+
+    # If uploaded file is a photo, return immediately
     if result["medium"] == "Photo":
         return jsonify({
             "type": "Photo",
@@ -36,11 +40,17 @@ def analyze():
             "confidence": result["confidence"]
         })
 
-    # Build RAG prompt using only the medium
+
+    # Build RAG prompt using detected medium
     prompt = build_prompt(result["medium"])
 
-    # Generate response from LLM
-    feedback = call_llm(prompt)
+
+    # Send BOTH prompt + image to Vision LLM
+    feedback = call_llm(
+        prompt=prompt,
+        image_path=path
+    )
+
 
     return jsonify({
         "type": "Drawing",
