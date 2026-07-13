@@ -1,102 +1,79 @@
 import cv2
 import numpy as np
-
 from sklearn.cluster import KMeans
+from services.color_database import classify_color
+import numpy as np
 
-COLOR_NAMES = {
+def detect_colors(image_path, medium="ColorPencil", n_colors=14, min_percent=1.0):
+    """
+    Detects the specific colors used in a drawing.
+    Returns [{"color": name, "percentage": float}, ...].
 
-    "Black": (0,0,0),
-    "White": (255,255,255),
-    "Gray": (128,128,128),
+    If the detected medium is Graphite Pencil, color detection is skipped
+    and only "Pencil" is returned.
+    """
 
-    "Red": (255,0,0),
-    "Green": (0,255,0),
-    "Blue": (0,0,255),
+    # Normalize medium name
+    medium_name = medium.lower().replace(" ", "").replace("_", "")
 
-    "Yellow": (255,255,0),
-    "Orange": (255,165,0),
-    "Brown": (150,75,0),
+    # Skip color detection for graphite pencil drawings
+    if medium_name == "graphitepencil":
+        return [
+            {
+                "color": "Pencil",
+                "percentage": 100.0
+            }
+        ]
 
-    "Purple": (128,0,128),
-    "Pink": (255,192,203),
+    image = cv2.imread(image_path)
+    if image is None:
+        return []
 
-    "Cyan": (0,255,255)
-}
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    pixels = image.reshape(-1, 3)
 
+    # Remove near-white background/paper
+    pixels = pixels[np.any(pixels < 245, axis=1)]
 
-def nearest_color(rgb):
+    if len(pixels) == 0:
+        return []
 
-    rgb=np.array(rgb)
+    # Number of clusters
+    k = min(n_colors, len(pixels))
 
-    minimum=None
-
-    color_name=None
-
-    for name,value in COLOR_NAMES.items():
-
-        value=np.array(value)
-
-        distance=np.linalg.norm(rgb-value)
-
-        if minimum is None or distance<minimum:
-
-            minimum=distance
-
-            color_name=name
-
-    return color_name
-
-
-def detect_colors(image_path,n_colors=5):
-
-    image=cv2.imread(image_path)
-
-    image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-
-    pixels=image.reshape((-1,3))
-
-    kmeans=KMeans(
-
-        n_clusters=n_colors,
-
+    kmeans = KMeans(
+        n_clusters=k,
         random_state=42,
-
         n_init=10
-
     )
 
-    kmeans.fit(pixels)
+    labels = kmeans.fit_predict(pixels)
+    centers = kmeans.cluster_centers_
 
-    centers=kmeans.cluster_centers_
+    counts = np.bincount(labels)
+    percentages = counts / counts.sum()
 
-    labels=kmeans.labels_
+    merged = {}
 
-    counts=np.bincount(labels)
+    for center, percent in zip(centers, percentages):
 
-    percentages=counts/len(labels)
+        if percent * 100 < min_percent:
+            continue
 
-    result=[]
+        name = classify_color(center.astype(int))
 
-    for color,percent in zip(centers,percentages):
+        merged[name] = merged.get(name, 0) + percent
 
-        name=nearest_color(color)
-
-        result.append({
-
-            "color":name,
-
-            "percentage":round(percent*100,2)
-
-        })
-
-    result=sorted(
-
-        result,
-
-        key=lambda x:x["percentage"],
-
+    result = sorted(
+        merged.items(),
+        key=lambda x: x[1],
         reverse=True
-
     )
 
-    return result
+    return [
+        {
+            "color": name,
+            "percentage": round(percent * 100, 1)
+        }
+        for name, percent in result
+    ]

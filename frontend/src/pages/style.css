@@ -489,6 +489,28 @@
 
 .mock-result-row.muted .mock-dot { background: #ddd; }
 
+.colors-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.color-chip {
+  padding: 8px 14px;
+  background: #fff4ec;
+  border: 1px solid #ffd5bf;
+  border-radius: 20px;
+  color: #e66a2c;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.color-chip:hover {
+  background: #ffe7d7;
+  transform: translateY(-2px);
+}
 
 /* ══════════════════════════════════════════════════════════════
    HOME — FOOTER

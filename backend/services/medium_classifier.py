@@ -43,19 +43,41 @@ model.eval()
 # PREDICT FUNCTION
 # -----------------------------
 def classify_medium(image_path):
+
     image = Image.open(image_path).convert("RGB")
 
-    inputs = processor(images=image, return_tensors="pt").to(DEVICE)
+    inputs = processor(
+        images=image,
+        return_tensors="pt"
+    ).to(DEVICE)
+
 
     with torch.no_grad():
-        outputs = model(**inputs)
-        probabilities = torch.softmax(outputs.logits, dim=1)
-        confidence, prediction = torch.max(probabilities, dim=1)
 
-    medium = CLASS_NAMES[prediction.item()]
-    confidence = round(confidence.item() * 100, 2)
+        outputs = model(**inputs)
+
+        probabilities = torch.softmax(
+            outputs.logits,
+            dim=1
+        )
+
+        values, indices = torch.topk(
+            probabilities,
+            k=3
+        )
+
+
+    predictions = []
+
+    for value, index in zip(values[0], indices[0]):
+
+        predictions.append({
+            "medium": CLASS_NAMES[index.item()],
+            "confidence": round(value.item()*100,2)
+        })
+
 
     return {
-        "medium": medium,
-        "confidence": confidence
+        "top_prediction": predictions[0],
+        "alternatives": predictions[1:]
     }

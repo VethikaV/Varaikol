@@ -107,12 +107,26 @@ export default function AnalyzePage() {
                 {/* RIGHT: CONTENT */}
                 <div className="analyze-content">
                   {/* MEDIUM */}
-                  <div className="info-block">
-                    <span className="label">Detected Medium</span>
-                    <div className="value highlight">
-                      {result?.medium || "Unknown"}
-                    </div>
-                  </div>
+                 <div className="info-block">
+  <span className="label">Detected Medium</span>
+  <div className="value highlight">
+    {result?.medium || "Unknown"}
+  </div>
+                 </div>
+ 
+                   {/* COLORS */}
+                 {result?.colors?.length > 0 && (
+                 <div className="info-block">
+                  <span className="label">Colors Used</span>
+                   <div className="colors-list">
+                   {result.colors.map((color, index) => (
+                   <span key={index} className="color-chip">
+                   {color}
+                  </span>
+                     ))}
+                   </div>
+                   </div>
+                  )} 
 
                   {/* FEEDBACK */}
                  <div className="info-block">
